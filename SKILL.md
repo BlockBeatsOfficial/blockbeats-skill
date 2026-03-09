@@ -1,5 +1,5 @@
 ---
-name: blockbeats-openclaw-skill
+name: blockbeats-news
 description: BlockBeats API skill for querying crypto news, newsflashes, articles, search, and on-chain market data (ETF flows, stablecoin supply, derivatives OI, M2, DXY, Bitfinex long positions, and more). Requires BLOCKBEATS_API_KEY.
 metadata:
   openclaw:
