@@ -396,7 +396,7 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
 
 | 错误情况 | 处理方式 |
 |---------|---------|
-| 未设置 `BLOCKBEATS_API_KEY` | 提示：请先设置环境变量 BLOCKBEATS_API_KEY，申请地址：https://api-pro.theblockbeats.info |
+| 未设置 `BLOCKBEATS_API_KEY` | 提示：请先设置环境变量 BLOCKBEATS_API_KEY，申请地址：https://www.theblockbeats.info/ |
 | HTTP 401 | 提示：API Key 无效或已过期，请检查密钥是否正确 |
 | HTTP 403 | 提示：当前套餐无权访问该接口，请升级套餐 |
 | status 非 0 | 显示 message 字段内容 |

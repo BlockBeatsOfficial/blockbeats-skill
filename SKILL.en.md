@@ -396,7 +396,7 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
 
 | Error condition | Response |
 |----------------|----------|
-| `BLOCKBEATS_API_KEY` not set | Prompt: Please set the BLOCKBEATS_API_KEY environment variable. Apply at: https://api-pro.theblockbeats.info |
+| `BLOCKBEATS_API_KEY` not set | Prompt: Please set the BLOCKBEATS_API_KEY environment variable. Apply at: https://www.theblockbeats.info/ |
 | HTTP 401 | Prompt: API Key invalid or expired, please verify your key |
 | HTTP 403 | Prompt: Current plan does not have access to this endpoint, please upgrade |
 | status non-zero | Display the `message` field content |
