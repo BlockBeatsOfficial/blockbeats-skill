@@ -227,6 +227,59 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
 
 ---
 
+## 场景六：快讯与文章列表
+
+根据用户意图选择对应快讯分类或文章接口，默认返回10条，支持 `size` 参数调整数量。
+
+**快讯分类触发词与接口对照**：
+
+| 用户说 | 接口路径 |
+|--------|---------|
+| 最新快讯 / 快讯列表 / 有什么新消息 | `/v1/newsflash` |
+| 重要快讯 / 重点新闻 / 大事件 | `/v1/newsflash/important` |
+| 原创快讯 / 原创报道 | `/v1/newsflash/original` |
+| 首发快讯 / 独家 / 独家快讯 | `/v1/newsflash/first` |
+| 链上快讯 / 链上数据 / 链上动态 / 链上消息 | `/v1/newsflash/onchain` |
+| 融资快讯 / 融资新闻 / 哪些项目融资 / 投融资动态 | `/v1/newsflash/financing` |
+| 预测市场 / Polymarket / 博彩 / 预测 | `/v1/newsflash/prediction` |
+| Meme 快讯 / meme币 / 土狗 / meme动态 | `/v1/newsflash/meme` |
+| AI 快讯 / AI 新闻 / 人工智能动态 / AI 项目 | `/v1/newsflash/ai` |
+
+**文章分类触发词与接口对照**：
+
+| 用户说 | 接口路径 |
+|--------|---------|
+| 文章列表 / 深度文章 / 最新文章 | `/v1/article` |
+| 重要文章 / 重点报道 | `/v1/article/important` |
+| 原创文章 / 原创深度 | `/v1/article/original` |
+
+**请求示例**（以 AI 快讯为例）：
+
+```bash
+curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
+  "http://api-pro.theblockbeats.info/v1/newsflash/ai" \
+  -G --data-urlencode "page=1" --data-urlencode "size=10" --data-urlencode "lang=cn"
+```
+
+**输出格式**：
+
+```
+📰 [分类名称] · 最新 [N] 条
+
+1. [标题] [time_cn]
+   [abstract 摘要，如有]
+
+2. [标题] [time_cn]
+   [abstract 摘要，如有]
+...
+```
+
+**注意**：
+- `content` 为 HTML，展示时剥离标签只显示纯文本
+- 文章类接口额外返回 `url` 字段，可附上原文链接
+
+---
+
 ## 单接口参考
 
 ### 快讯接口（均支持 page/size/lang）

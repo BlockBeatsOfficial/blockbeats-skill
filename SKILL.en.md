@@ -227,6 +227,59 @@ Response fields: `title`, `abstract`, `content` (plain text), `type` (0=article,
 
 ---
 
+## Scenario 6: Newsflash & Article Lists
+
+Select the appropriate newsflash category or article endpoint based on user intent. Default returns 10 items; use `size` param to adjust.
+
+**Newsflash category triggers and endpoints**:
+
+| User says | Endpoint path |
+|-----------|--------------|
+| latest news / newsflash list / what's new | `/v1/newsflash` |
+| important news / major events / key headlines | `/v1/newsflash/important` |
+| original newsflash / original coverage | `/v1/newsflash/original` |
+| first-report / exclusive / scoop | `/v1/newsflash/first` |
+| on-chain news / on-chain data / on-chain updates | `/v1/newsflash/onchain` |
+| financing news / fundraising / VC deals / investment rounds | `/v1/newsflash/financing` |
+| prediction market / Polymarket / forecast / betting | `/v1/newsflash/prediction` |
+| meme news / meme coins / meme updates | `/v1/newsflash/meme` |
+| AI news / AI updates / AI projects / artificial intelligence | `/v1/newsflash/ai` |
+
+**Article category triggers and endpoints**:
+
+| User says | Endpoint path |
+|-----------|--------------|
+| article list / in-depth articles / latest articles | `/v1/article` |
+| important articles / key reports | `/v1/article/important` |
+| original articles / original analysis | `/v1/article/original` |
+
+**Request example** (AI newsflash):
+
+```bash
+curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
+  "http://api-pro.theblockbeats.info/v1/newsflash/ai" \
+  -G --data-urlencode "page=1" --data-urlencode "size=10" --data-urlencode "lang=en"
+```
+
+**Output format**:
+
+```
+📰 [Category Name] · Latest [N] items
+
+1. [Title] [time_cn]
+   [abstract, if available]
+
+2. [Title] [time_cn]
+   [abstract, if available]
+...
+```
+
+**Notes**:
+- `content` field is HTML; strip tags and display plain text only
+- Article endpoints also return `url`; append original link when displaying
+
+---
+
 ## Single Endpoint Reference
 
 ### Newsflash Endpoints (all support page/size/lang)
