@@ -5,11 +5,8 @@ metadata:
   openclaw:
     emoji: "📰"
     requires:
-      env:
-        - BLOCKBEATS_API_KEY
       bins:
         - curl
-    primaryEnv: BLOCKBEATS_API_KEY
     os:
       - darwin
       - linux
@@ -243,7 +240,7 @@ Select the appropriate newsflash category or article endpoint based on user inte
 | financing news / fundraising / VC deals / investment rounds | `/v1/newsflash/financing` |
 | prediction market / Polymarket / forecast / betting | `/v1/newsflash/prediction` |
 | meme news / meme coins / meme updates | `/v1/newsflash/meme` |
-| AI news / AI updates / AI projects / artificial intelligence | `/v1/newsflash/ai` |
+| AI news / AI updates / AI projects / artificial intelligence | `/v1/newsflash?type=ai` |
 
 **Article category triggers and endpoints**:
 
@@ -257,8 +254,8 @@ Select the appropriate newsflash category or article endpoint based on user inte
 
 ```bash
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/newsflash/ai" \
-  -G --data-urlencode "page=1" --data-urlencode "size=10" --data-urlencode "lang=en"
+  "http://api-pro.theblockbeats.info/v1/newsflash" \
+  -G --data-urlencode "type=ai" --data-urlencode "page=1" --data-urlencode "size=10" --data-urlencode "lang=en"
 ```
 
 **Output format**:
@@ -294,7 +291,7 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
 | Financing | `GET /v1/newsflash/financing` |
 | Prediction market | `GET /v1/newsflash/prediction` |
 | Meme | `GET /v1/newsflash/meme` |
-| AI | `GET /v1/newsflash/ai` |
+| AI | `GET /v1/newsflash?type=ai` |
 
 ```bash
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
@@ -359,7 +356,7 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
 | Financing news | `GET /v1/newsflash/financing` |
 | Prediction market / Polymarket | `GET /v1/newsflash/prediction` |
 | Meme news / meme coins | `GET /v1/newsflash/meme` |
-| AI newsflashes / AI news | `GET /v1/newsflash/ai` |
+| AI newsflashes / AI news | `GET /v1/newsflash?type=ai` |
 | Article list | `GET /v1/article` |
 | Important articles | `GET /v1/article/important` |
 | Original articles | `GET /v1/article/original` |

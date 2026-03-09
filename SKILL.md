@@ -5,11 +5,8 @@ metadata:
   openclaw:
     emoji: "📰"
     requires:
-      env:
-        - BLOCKBEATS_API_KEY
       bins:
         - curl
-    primaryEnv: BLOCKBEATS_API_KEY
     os:
       - darwin
       - linux
@@ -243,7 +240,7 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
 | 融资快讯 / 融资新闻 / 哪些项目融资 / 投融资动态 | `/v1/newsflash/financing` |
 | 预测市场 / Polymarket / 博彩 / 预测 | `/v1/newsflash/prediction` |
 | Meme 快讯 / meme币 / 土狗 / meme动态 | `/v1/newsflash/meme` |
-| AI 快讯 / AI 新闻 / 人工智能动态 / AI 项目 | `/v1/newsflash/ai` |
+| AI 快讯 / AI 新闻 / 人工智能动态 / AI 项目 | `/v1/newsflash?type=ai` |
 
 **文章分类触发词与接口对照**：
 
@@ -257,8 +254,8 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
 
 ```bash
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/newsflash/ai" \
-  -G --data-urlencode "page=1" --data-urlencode "size=10" --data-urlencode "lang=cn"
+  "http://api-pro.theblockbeats.info/v1/newsflash" \
+  -G --data-urlencode "type=ai" --data-urlencode "page=1" --data-urlencode "size=10" --data-urlencode "lang=cn"
 ```
 
 **输出格式**：
@@ -294,7 +291,7 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
 | 融资快讯 | `GET /v1/newsflash/financing` |
 | 预测市场快讯 | `GET /v1/newsflash/prediction` |
 | Meme 快讯 | `GET /v1/newsflash/meme` |
-| AI 快讯 | `GET /v1/newsflash/ai` |
+| AI 快讯 | `GET /v1/newsflash?type=ai` |
 
 ```bash
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
@@ -359,7 +356,7 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
 | 融资快讯 / 融资新闻 | `GET /v1/newsflash/financing` |
 | 预测市场 / Polymarket | `GET /v1/newsflash/prediction` |
 | Meme 快讯 / meme币 | `GET /v1/newsflash/meme` |
-| AI 快讯 / AI 新闻 | `GET /v1/newsflash/ai` |
+| AI 快讯 / AI 新闻 | `GET /v1/newsflash?type=ai` |
 | 文章列表 | `GET /v1/article` |
 | 重要文章 | `GET /v1/article/important` |
 | 原创文章 | `GET /v1/article/original` |
