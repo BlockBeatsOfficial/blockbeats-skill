@@ -239,7 +239,6 @@ Select the appropriate newsflash category or article endpoint based on user inte
 | on-chain news / on-chain data / on-chain updates | `/v1/newsflash/onchain` |
 | financing news / fundraising / VC deals / investment rounds | `/v1/newsflash/financing` |
 | prediction market / Polymarket / forecast / betting | `/v1/newsflash/prediction` |
-| meme news / meme coins / meme updates | `/v1/newsflash/meme` |
 | AI news / AI updates / AI projects / artificial intelligence | `/v1/newsflash?type=ai` |
 
 **Article category triggers and endpoints**:
@@ -290,7 +289,6 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
 | On-chain | `GET /v1/newsflash/onchain` |
 | Financing | `GET /v1/newsflash/financing` |
 | Prediction market | `GET /v1/newsflash/prediction` |
-| Meme | `GET /v1/newsflash/meme` |
 | AI | `GET /v1/newsflash?type=ai` |
 
 ```bash
@@ -355,7 +353,6 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
 | On-chain newsflashes | `GET /v1/newsflash/onchain` |
 | Financing news | `GET /v1/newsflash/financing` |
 | Prediction market / Polymarket | `GET /v1/newsflash/prediction` |
-| Meme news / meme coins | `GET /v1/newsflash/meme` |
 | AI newsflashes / AI news | `GET /v1/newsflash?type=ai` |
 | Article list | `GET /v1/article` |
 | Important articles | `GET /v1/article/important` |
