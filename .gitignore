@@ -3,5 +3,3 @@ dist/
 .claude/
 *.log
 .env
-SKILL.md
-SKILL.en.md
