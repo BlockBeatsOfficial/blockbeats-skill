@@ -2,15 +2,6 @@
 
 An [OpenClaw](https://openclaw.dev) skill for querying crypto news, newsflashes, articles, and on-chain market data via the [BlockBeats Pro API](https://www.theblockbeats.info/).
 
-## Features
-
-- **Market Overview** — sentiment index, BTC ETF inflows, on-chain volume, key headlines
-- **Capital Flow Analysis** — top 10 on-chain net inflows, stablecoin market cap, ETF data
-- **Macro Environment Assessment** — Global M2, US 10Y Treasury yield, DXY Dollar Index
-- **Derivatives Market Analysis** — platform OI comparison, exchange rankings, Bitfinex longs
-- **Keyword Search** — full-text search across newsflashes and articles
-- **Newsflash & Article Lists** — all categories: important, original, first-report, on-chain, financing, prediction market, AI
-
 ## Requirements
 
 - [OpenClaw](https://openclaw.dev) installed
@@ -19,19 +10,31 @@ An [OpenClaw](https://openclaw.dev) skill for querying crypto news, newsflashes,
 
 ## Installation
 
+1. Clone this repository or download `SKILL.md`
+2. Load the skill in OpenClaw:
+
 ```bash
-npm install -g blockbeats-openclaw-skill
+openclaw skill add ./SKILL.md
 ```
 
-Then set your API key:
+3. Set your API key:
 
 ```bash
 export BLOCKBEATS_API_KEY=your_api_key_here
 ```
 
-## Usage
+## Features
 
-Once installed, the skill is automatically available in OpenClaw. Example prompts:
+| Scenario | Triggers |
+|----------|----------|
+| Market Overview | "How's the market today", "daily summary" |
+| Capital Flow Analysis | "Where is capital flowing", "smart money", "on-chain trends" |
+| Macro Environment Assessment | "Macro environment", "M2", "US Treasuries", "good time to enter" |
+| Derivatives Market Analysis | "Futures market", "open interest", "Binance Bybit OI" |
+| Keyword Search | "search [keyword]", "[keyword] news" |
+| Newsflash & Article Lists | "latest news", "important newsflashes", "AI news", "financing news" |
+
+## Example Prompts
 
 ```
 How's the crypto market today?
@@ -42,30 +45,9 @@ Search for Ethereum news
 What's the BTC ETF inflow trend?
 ```
 
-## Skill File
+## Skill Definition
 
-The skill definition is in [`SKILL.md`](./SKILL.md), which describes all available scenarios, API endpoints, output formats, and interpretation rules.
-
-## API Reference
-
-**Base URL**: `http://api-pro.theblockbeats.info`
-**Auth**: All requests require header `api-key: $BLOCKBEATS_API_KEY`
-
-Key endpoints:
-
-| Category | Endpoint |
-|----------|----------|
-| Newsflashes | `GET /v1/newsflash` |
-| Articles | `GET /v1/article` |
-| Search | `GET /v1/search` |
-| BTC ETF | `GET /v1/data/btc_etf` |
-| On-chain top 10 | `GET /v1/data/top10_netflow` |
-| Stablecoin market cap | `GET /v1/data/stablecoin_marketcap` |
-| Global M2 | `GET /v1/data/m2_supply` |
-| DXY | `GET /v1/data/dxy` |
-| Sentiment index | `GET /v1/data/bottom_top_indicator` |
-
-See [`SKILL.md`](./SKILL.md) for the full endpoint reference.
+The full skill definition is in [`SKILL.md`](./SKILL.md), which describes all scenarios, API endpoints, output formats, and interpretation rules.
 
 ## License
 
