@@ -2,6 +2,12 @@
 
 BlockBeats Pro API MCP Server，为 AI 助手提供加密货币快讯、文章、搜索和链上市场数据查询能力。
 
+## 安装
+
+```bash
+npm install -g blockbeats-mcp
+```
+
 ## 前置条件
 
 - Node.js 18+
