@@ -22,384 +22,384 @@ metadata:
 
 # BlockBeats API Skill
 
-通过 BlockBeats Pro API 查询加密货币快讯、文章、搜索和链上市场数据。
+Query crypto newsflashes, articles, search results, and on-chain market data via the BlockBeats Pro API.
 
 **Base URL**: `http://api-pro.theblockbeats.info`
-**认证**: 所有请求需携带 Header `api-key: $BLOCKBEATS_API_KEY`
-**响应格式**: `{"status": 0, "message": "", "data": {...}}` — status 为 0 表示成功
+**Auth**: All requests require Header `api-key: $BLOCKBEATS_API_KEY`
+**Response format**: `{"status": 0, "message": "", "data": {...}}` — status 0 = success
 
 ---
 
-## 场景一：市场速览
+## Scenario 1: Market Overview
 
-**触发词**: 今天市场怎么样、行情如何、市场概况、每日速览
+**Triggers**: How's the market today, market overview, daily summary, market conditions
 
-并行执行以下四个请求：
+Execute the following four requests in parallel:
 
 ```bash
-# 1. 市场情绪指数
+# 1. Market sentiment index
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/data/bottom_top_indicator"
 
-# 2. 重要快讯（最新5条）
+# 2. Important newsflashes (latest 5)
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/newsflash/important" \
-  -G --data-urlencode "size=5" --data-urlencode "lang=cn"
+  -G --data-urlencode "size=5" --data-urlencode "lang=en"
 
-# 3. BTC ETF 净流入
+# 3. BTC ETF net inflow
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/data/btc_etf"
 
-# 4. 每日链上交易量
+# 4. Daily on-chain transaction volume
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/data/daily_tx"
 ```
 
-**输出格式**:
+**Output format**:
 ```
-📊 市场速览 · [今日日期]
+📊 Market Overview · [Today's date]
 
-情绪指数：[数值] → [<20 潜在买入区间 / 20-80 中性 / >80 潜在卖出区间]
-BTC ETF：今日净流入 [数值] 百万美元，累计 [数值] 百万
-链上交易量：今日 [数值]（较昨日 [↑/↓][涨跌幅]）
-重要快讯：
-  · [标题1] [时间]
-  · [标题2] [时间]
-  · [标题3] [时间]
+Sentiment Index: [value] → [<20 potential buy zone / 20-80 neutral / >80 potential sell zone]
+BTC ETF: Today net inflow [value] million USD, cumulative [value] million
+On-chain Volume: Today [value] (vs yesterday [↑/↓][change%])
+Key News:
+  · [Title 1] [time]
+  · [Title 2] [time]
+  · [Title 3] [time]
 ```
 
-**解读规则**:
-- 情绪指数 < 20 → 提示用户关注潜在机会
-- 情绪指数 > 80 → 提示注意卖出风险
-- ETF 连续3日正流入 → 机构入场信号
-- ETF 净流入 > 500M/天 → 强买入信号
-- 链上交易量持续增长 → 链上活跃度上升，市场热度提高
+**Interpretation rules**:
+- Sentiment < 20 → Alert user to potential opportunities
+- Sentiment > 80 → Warn about sell-off risk
+- ETF positive inflow 3 days in a row → Institutional accumulation signal
+- ETF net inflow > 500M/day → Strong buy signal
+- Rising on-chain volume → Increasing on-chain activity and market heat
 
 ---
 
-## 场景二：资金流向分析
+## Scenario 2: Capital Flow Analysis
 
-**触发词**: 资金流向哪里、链上热点、哪个币在被买入、稳定币、聪明钱
+**Triggers**: Where is capital flowing, on-chain trends, which tokens are being bought, stablecoins, smart money
 
-并行执行：
+Execute in parallel:
 
 ```bash
-# 1. 链上净流入前十代币（默认 solana，用户提到 Base/ETH 时替换 network 参数）
+# 1. Top 10 tokens by on-chain net inflow (default solana; replace network param for Base/ETH)
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/data/top10_netflow" \
   -G --data-urlencode "network=solana"
 
-# 2. 稳定币市值
+# 2. Stablecoin market cap
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/data/stablecoin_marketcap"
 
-# 3. BTC ETF 净流入
+# 3. BTC ETF net inflow
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/data/btc_etf"
 ```
 
-network 参数根据用户意图选择：`solana`（默认）/ `base` / `ethereum`
+Select `network` parameter based on user intent: `solana` (default) / `base` / `ethereum`
 
-**输出格式**:
+**Output format**:
 ```
-💰 资金流向分析
+💰 Capital Flow Analysis
 
-链上热门（[链名]）：
-  1. [代币] 净流入 $[数值]  市值 $[数值]
+On-chain Trending ([chain]):
+  1. [token] Net inflow $[value]  Market cap $[value]
   2. ...
 
-稳定币：USDT [↑涨/↓跌] USDC [↑涨/↓跌]（扩张/收缩信号）
-机构资金：ETF 今日 [流入/流出] [数值] 百万美元
+Stablecoins: USDT [↑/↓] USDC [↑/↓] (expansion/contraction signal)
+Institutional: ETF today [inflow/outflow] [value] million USD
 ```
 
-**解读规则**:
-- 稳定币市值持续扩张 → 场内资金增加，买盘潜力强
-- 稳定币市值收缩 → 资金出场，谨慎
+**Interpretation rules**:
+- Stablecoin market cap expanding → More capital in market, stronger buy potential
+- Stablecoin market cap shrinking → Capital exiting, caution advised
 
 ---
 
-## 场景三：宏观环境判断
+## Scenario 3: Macro Environment Assessment
 
-**触发词**: 宏观环境、适合入场吗、流动性、美债、美元、M2、大环境
+**Triggers**: Macro environment, is it a good time to enter, liquidity, US Treasuries, dollar, M2, big picture
 
-并行执行：
+Execute in parallel:
 
 ```bash
-# 1. 全球 M2 供应量
+# 1. Global M2 supply
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/data/m2_supply" \
   -G --data-urlencode "type=1Y"
 
-# 2. 美债收益率
+# 2. US 10Y Treasury yield
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/data/us10y" \
   -G --data-urlencode "type=1M"
 
-# 3. DXY 美元指数
+# 3. DXY Dollar Index
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/data/dxy" \
   -G --data-urlencode "type=1M"
 
-# 4. 合规交易所总资产
+# 4. Compliant exchange total assets
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/data/compliant_total"
 ```
 
-**输出格式**:
+**Output format**:
 ```
-🌐 宏观环境判断
+🌐 Macro Environment Assessment
 
-全球 M2：[最新值] 同比 [↑/↓][涨跌幅] → [宽松/收缩]
-美债收益率（10Y）：[最新值]% → [上升/下降趋势]
-美元指数（DXY）：[最新值] → [强势/弱势]
-合规交易所总资产：$[数值] → [流入/流出趋势]
+Global M2: [latest value] YoY [↑/↓][change%] → [expansionary/contractionary]
+US Treasury Yield (10Y): [latest value]% → [rising/falling trend]
+Dollar Index (DXY): [latest value] → [strong/weak]
+Compliant Exchange Assets: $[value] → [inflow/outflow trend]
 
-综合判断：[利好/中性/利空] 加密市场
+Overall: [bullish/neutral/bearish] for crypto market
 ```
 
-**解读规则**:
-- M2 同比增长 > 5% → 流动性宽松，利好风险资产
-- M2 同比增长 < 0% → 流动性收缩，谨慎
-- DXY 持续上涨 → 美元强势，加密承压
-- DXY 持续下跌 → 美元走弱，加密受益
-- 美债收益率上升 → 无风险收益率提高，资金回流债市
-- 合规交易所资产增加 → 机构配置意愿增强
+**Interpretation rules**:
+- M2 YoY > 5% → Loose liquidity, favorable for risk assets
+- M2 YoY < 0% → Liquidity tightening, caution
+- DXY rising → Strong dollar, crypto under pressure
+- DXY falling → Weak dollar, crypto benefits
+- Rising Treasury yield → Higher risk-free rate, capital returning to bonds
+- Rising compliant exchange assets → Growing institutional allocation appetite
 
 ---
 
-## 场景四：合约市场分析
+## Scenario 4: Derivatives Market Analysis
 
-**触发词**: 合约市场、多空情况、未平仓合约、Binance Bybit 合约量、杠杆风险
+**Triggers**: Futures market, long/short positioning, open interest, Binance Bybit OI, leverage risk
 
-并行执行：
+Execute in parallel:
 
 ```bash
-# 1. 主流合约平台对比
+# 1. Major derivatives platform comparison
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/data/contract" \
   -G --data-urlencode "dataType=1D"
 
-# 2. 合约交易所快照
+# 2. Exchange snapshot
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/data/exchanges" \
   -G --data-urlencode "size=10"
 
-# 3. Bitfinex BTC 多头持仓
+# 3. Bitfinex BTC long positions
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/data/bitfinex_long" \
   -G --data-urlencode "symbol=btc" --data-urlencode "type=1D"
 ```
 
-**输出格式**:
+**Output format**:
 ```
-⚡ 合约市场分析
+⚡ Derivatives Market Analysis
 
-主流平台 OI：
-  Binance [数值]  Bybit [数值]  Hyperliquid [数值]
+Platform OI:
+  Binance [value]  Bybit [value]  Hyperliquid [value]
 
-交易所排名（按成交量）：
-  1. [名称] 成交额 $[数值]  OI $[数值]
+Exchange Rankings (by volume):
+  1. [name] Volume $[value]  OI $[value]
   2. ...
 
-Bitfinex BTC 多头持仓：[数值] → [增加/减少]（杠杆多头情绪 [强/弱]）
+Bitfinex BTC Longs: [value] → [increasing/decreasing] (leveraged long sentiment [strong/weak])
 ```
 
-**解读规则**:
-- Bitfinex 多头持仓持续增加 → 大户看多，市场信心增强
-- Bitfinex 多头持仓骤降 → 警惕多头平仓引发下跌
+**Interpretation rules**:
+- Bitfinex longs persistently increasing → Large players bullish, market confidence growing
+- Bitfinex longs dropping sharply → Watch for long liquidation cascade
 
 ---
 
-## 场景五：关键词搜索
+## Scenario 5: Keyword Search
 
-**触发词**: 搜索 [关键词]、查找 [关键词]、[关键词] 相关新闻、[关键词] 有什么消息
+**Triggers**: search [keyword], find [keyword], [keyword] news, what's happening with [keyword]
 
 ```bash
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/search" \
-  -G --data-urlencode "name=[关键词]" --data-urlencode "size=10" --data-urlencode "lang=cn"
+  -G --data-urlencode "name=[keyword]" --data-urlencode "size=10" --data-urlencode "lang=en"
 ```
 
-返回字段：`title`、`abstract`、`content`（纯文本）、`type`（0=文章 1=快讯）、`time_cn`（相对时间）、`url`
+Response fields: `title`, `abstract`, `content` (plain text), `type` (0=article, 1=newsflash), `time_cn` (relative time), `url`
 
 ---
 
-## 场景六：快讯与文章列表
+## Scenario 6: Newsflash & Article Lists
 
-根据用户意图选择对应快讯分类或文章接口，默认返回10条，支持 `size` 参数调整数量。
+Select the appropriate newsflash category or article endpoint based on user intent. Default returns 10 items; use `size` param to adjust.
 
-**快讯分类触发词与接口对照**：
+**Newsflash category triggers and endpoints**:
 
-| 用户说 | 接口路径 |
-|--------|---------|
-| 最新快讯 / 快讯列表 / 有什么新消息 | `/v1/newsflash` |
-| 重要快讯 / 重点新闻 / 大事件 | `/v1/newsflash/important` |
-| 原创快讯 / 原创报道 | `/v1/newsflash/original` |
-| 首发快讯 / 独家 / 独家快讯 | `/v1/newsflash/first` |
-| 链上快讯 / 链上数据 / 链上动态 / 链上消息 | `/v1/newsflash/onchain` |
-| 融资快讯 / 融资新闻 / 哪些项目融资 / 投融资动态 | `/v1/newsflash/financing` |
-| 预测市场 / Polymarket / 博彩 / 预测 | `/v1/newsflash/prediction` |
-| AI 快讯 / AI 新闻 / 人工智能动态 / AI 项目 | `/v1/newsflash?type=ai` |
+| User says | Endpoint path |
+|-----------|--------------|
+| latest news / newsflash list / what's new | `/v1/newsflash` |
+| important news / major events / key headlines | `/v1/newsflash/important` |
+| original newsflash / original coverage | `/v1/newsflash/original` |
+| first-report / exclusive / scoop | `/v1/newsflash/first` |
+| on-chain news / on-chain data / on-chain updates | `/v1/newsflash/onchain` |
+| financing news / fundraising / VC deals / investment rounds | `/v1/newsflash/financing` |
+| prediction market / Polymarket / forecast / betting | `/v1/newsflash/prediction` |
+| AI news / AI updates / AI projects / artificial intelligence | `/v1/newsflash?type=ai` |
 
-**文章分类触发词与接口对照**：
+**Article category triggers and endpoints**:
 
-| 用户说 | 接口路径 |
-|--------|---------|
-| 文章列表 / 深度文章 / 最新文章 | `/v1/article` |
-| 重要文章 / 重点报道 | `/v1/article/important` |
-| 原创文章 / 原创深度 | `/v1/article/original` |
+| User says | Endpoint path |
+|-----------|--------------|
+| article list / in-depth articles / latest articles | `/v1/article` |
+| important articles / key reports | `/v1/article/important` |
+| original articles / original analysis | `/v1/article/original` |
 
-**请求示例**（以 AI 快讯为例）：
+**Request example** (AI newsflash):
 
 ```bash
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/newsflash" \
-  -G --data-urlencode "type=ai" --data-urlencode "page=1" --data-urlencode "size=10" --data-urlencode "lang=cn"
+  -G --data-urlencode "type=ai" --data-urlencode "page=1" --data-urlencode "size=10" --data-urlencode "lang=en"
 ```
 
-**输出格式**：
+**Output format**:
 
 ```
-📰 [分类名称] · 最新 [N] 条
+📰 [Category Name] · Latest [N] items
 
-1. [标题] [time_cn]
-   [abstract 摘要，如有]
+1. [Title] [time_cn]
+   [abstract, if available]
 
-2. [标题] [time_cn]
-   [abstract 摘要，如有]
+2. [Title] [time_cn]
+   [abstract, if available]
 ...
 ```
 
-**注意**：
-- `content` 为 HTML，展示时剥离标签只显示纯文本
-- 文章类接口额外返回 `url` 字段，可附上原文链接
+**Notes**:
+- `content` field is HTML; strip tags and display plain text only
+- Article endpoints also return `url`; append original link when displaying
 
 ---
 
-## 单接口参考
+## Single Endpoint Reference
 
-### 快讯接口（均支持 page/size/lang）
+### Newsflash Endpoints (all support page/size/lang)
 
-| 接口 | URL |
-|------|-----|
-| 全部快讯 | `GET /v1/newsflash` |
-| 重要快讯 | `GET /v1/newsflash/important` |
-| 原创快讯 | `GET /v1/newsflash/original` |
-| 首发快讯 | `GET /v1/newsflash/first` |
-| 链上快讯 | `GET /v1/newsflash/onchain` |
-| 融资快讯 | `GET /v1/newsflash/financing` |
-| 预测市场快讯 | `GET /v1/newsflash/prediction` |
-| AI 快讯 | `GET /v1/newsflash?type=ai` |
+| Endpoint | URL |
+|----------|-----|
+| All newsflashes | `GET /v1/newsflash` |
+| Important | `GET /v1/newsflash/important` |
+| Original | `GET /v1/newsflash/original` |
+| First-report | `GET /v1/newsflash/first` |
+| On-chain | `GET /v1/newsflash/onchain` |
+| Financing | `GET /v1/newsflash/financing` |
+| Prediction market | `GET /v1/newsflash/prediction` |
+| AI | `GET /v1/newsflash?type=ai` |
 
 ```bash
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   "http://api-pro.theblockbeats.info/v1/newsflash/[type]" \
-  -G --data-urlencode "page=1" --data-urlencode "size=10" --data-urlencode "lang=cn"
+  -G --data-urlencode "page=1" --data-urlencode "size=10" --data-urlencode "lang=en"
 ```
 
-### 文章接口（均支持 page/size/lang）
+### Article Endpoints (all support page/size/lang)
 
-| 接口 | URL |
-|------|-----|
-| 全部文章 | `GET /v1/article` |
-| 重要文章 | `GET /v1/article/important` |
-| 原创文章 | `GET /v1/article/original` |
+| Endpoint | URL |
+|----------|-----|
+| All articles | `GET /v1/article` |
+| Important | `GET /v1/article/important` |
+| Original | `GET /v1/article/original` |
 
-### 数据接口
+### Data Endpoints
 
-| 接口 | URL | 关键参数 |
-|------|-----|---------|
-| BTC ETF 净流入 | `GET /v1/data/btc_etf` | 无 |
-| 每日链上交易量 | `GET /v1/data/daily_tx` | 无 |
-| IBIT/FBTC 净流入 | `GET /v1/data/ibit_fbtc` | 无 |
-| 稳定币市值 | `GET /v1/data/stablecoin_marketcap` | 无 |
-| 合规交易所总资产 | `GET /v1/data/compliant_total` | 无 |
-| 美债收益率 | `GET /v1/data/us10y` | `type=1D/1W/1M` |
-| DXY 美元指数 | `GET /v1/data/dxy` | `type=1D/1W/1M` |
-| 全球 M2 供应量 | `GET /v1/data/m2_supply` | `type=3M/6M/1Y/3Y` |
-| Bitfinex 多头持仓 | `GET /v1/data/bitfinex_long` | `symbol=btc` `type=1D/1W/1M/h24` |
-| 主流合约平台数据 | `GET /v1/data/contract` | `dataType=1D/1W/1M/3M/6M/12M` |
-| 抄底逃顶指标 | `GET /v1/data/bottom_top_indicator` | 无 |
-| 链上净流入前十 | `GET /v1/data/top10_netflow` | `network=solana/base/ethereum` |
-| 合约交易所快照 | `GET /v1/data/exchanges` | `name` `page` `size` |
-
----
-
-## 时间维度自动映射
-
-| 用户说 | 参数 |
-|--------|------|
-| 今天 / 最新 / 实时 | `type=1D` 或 `size=5` |
-| 这周 / 近期 | `type=1W` |
-| 这个月 / 最近一个月 | `type=1M` |
-| 今年 / 长期趋势 | `type=1Y` 或 `type=3Y` |
-| 最近24小时（仅 bitfinex_long）| `type=h24` |
+| Endpoint | URL | Key Parameters |
+|----------|-----|----------------|
+| BTC ETF net inflow | `GET /v1/data/btc_etf` | none |
+| Daily on-chain volume | `GET /v1/data/daily_tx` | none |
+| IBIT/FBTC net inflow | `GET /v1/data/ibit_fbtc` | none |
+| Stablecoin market cap | `GET /v1/data/stablecoin_marketcap` | none |
+| Compliant exchange assets | `GET /v1/data/compliant_total` | none |
+| US Treasury yield | `GET /v1/data/us10y` | `type=1D/1W/1M` |
+| Dollar Index (DXY) | `GET /v1/data/dxy` | `type=1D/1W/1M` |
+| Global M2 supply | `GET /v1/data/m2_supply` | `type=3M/6M/1Y/3Y` |
+| Bitfinex long positions | `GET /v1/data/bitfinex_long` | `symbol=btc` `type=1D/1W/1M/h24` |
+| Derivatives platform data | `GET /v1/data/contract` | `dataType=1D/1W/1M/3M/6M/12M` |
+| Buy/sell indicator | `GET /v1/data/bottom_top_indicator` | none |
+| Top 10 on-chain net inflow | `GET /v1/data/top10_netflow` | `network=solana/base/ethereum` |
+| Exchange snapshot | `GET /v1/data/exchanges` | `name` `page` `size` |
 
 ---
 
-## 意图映射表
+## Time Dimension Mapping
 
-| 用户意图 | 场景/接口 |
-|---------|----------|
-| 今天市场怎么样 / 每日速览 | 场景一：市场速览 |
-| 资金流向 / 链上热点 / 聪明钱 | 场景二：资金流向 |
-| 宏观环境 / M2 / 美债 / 适合入场吗 | 场景三：宏观环境 |
-| 合约 / 未平仓合约 / 合约平台 / 杠杆风险 | 场景四：合约市场 |
-| 搜索 [关键词] | 场景五：搜索 |
-| 最新快讯 / 快讯列表 | `GET /v1/newsflash` |
-| 重要快讯 | `GET /v1/newsflash/important` |
-| 原创快讯 | `GET /v1/newsflash/original` |
-| 首发快讯 | `GET /v1/newsflash/first` |
-| 链上快讯 | `GET /v1/newsflash/onchain` |
-| 融资快讯 / 融资新闻 | `GET /v1/newsflash/financing` |
-| 预测市场 / Polymarket | `GET /v1/newsflash/prediction` |
-| AI 快讯 / AI 新闻 | `GET /v1/newsflash?type=ai` |
-| 文章列表 | `GET /v1/article` |
-| 重要文章 | `GET /v1/article/important` |
-| 原创文章 | `GET /v1/article/original` |
-| BTC ETF 流入 | `GET /v1/data/btc_etf` |
+| User says | Parameter |
+|-----------|-----------|
+| today / latest / real-time | `type=1D` or `size=5` |
+| this week / recent | `type=1W` |
+| this month / last 30 days | `type=1M` |
+| this year / long-term trend | `type=1Y` or `type=3Y` |
+| last 24 hours (bitfinex_long only) | `type=h24` |
+
+---
+
+## Intent Mapping
+
+| User intent | Scenario / endpoint |
+|-------------|---------------------|
+| How's the market today / daily overview | Scenario 1: Market Overview |
+| Capital flow / on-chain trends / smart money | Scenario 2: Capital Flow |
+| Macro / M2 / US Treasuries / good time to enter | Scenario 3: Macro Assessment |
+| Futures / open interest / exchange OI / leverage risk | Scenario 4: Derivatives |
+| search [keyword] | Scenario 5: Search |
+| Latest news / newsflash list | `GET /v1/newsflash` |
+| Important newsflashes | `GET /v1/newsflash/important` |
+| Original newsflashes | `GET /v1/newsflash/original` |
+| First-report newsflashes | `GET /v1/newsflash/first` |
+| On-chain newsflashes | `GET /v1/newsflash/onchain` |
+| Financing news | `GET /v1/newsflash/financing` |
+| Prediction market / Polymarket | `GET /v1/newsflash/prediction` |
+| AI newsflashes / AI news | `GET /v1/newsflash?type=ai` |
+| Article list | `GET /v1/article` |
+| Important articles | `GET /v1/article/important` |
+| Original articles | `GET /v1/article/original` |
+| BTC ETF inflow | `GET /v1/data/btc_etf` |
 | IBIT FBTC | `GET /v1/data/ibit_fbtc` |
-| 稳定币市值 / USDT USDC | `GET /v1/data/stablecoin_marketcap` |
-| 美元指数 / DXY | `GET /v1/data/dxy` |
-| Bitfinex 多头 / 杠杆持仓 | `GET /v1/data/bitfinex_long` |
-| 抄底逃顶 / 市场情绪 | `GET /v1/data/bottom_top_indicator` |
-| 净流入代币 / 链上热门 | `GET /v1/data/top10_netflow` |
-| 合约交易所排名 | `GET /v1/data/exchanges` |
-| 链上交易量 / 链上活跃度 | `GET /v1/data/daily_tx` |
-| 合规交易所资产 / 机构托管 | `GET /v1/data/compliant_total` |
+| Stablecoin market cap / USDT USDC | `GET /v1/data/stablecoin_marketcap` |
+| Dollar index / DXY | `GET /v1/data/dxy` |
+| Bitfinex longs / leveraged positions | `GET /v1/data/bitfinex_long` |
+| Buy/sell signal / market sentiment | `GET /v1/data/bottom_top_indicator` |
+| Top inflow tokens / on-chain trending | `GET /v1/data/top10_netflow` |
+| Exchange rankings | `GET /v1/data/exchanges` |
+| On-chain volume / activity | `GET /v1/data/daily_tx` |
+| Compliant exchange assets / institutional custody | `GET /v1/data/compliant_total` |
 
 ---
 
-## 数据刷新频率
+## Data Refresh Frequency
 
-| 接口类型 | 更新频率 |
-|---------|---------|
-| 快讯 / 文章 / 搜索 | 实时 |
-| top10_netflow | 近实时 |
-| btc_etf / ibit_fbtc / daily_tx | 每日（T+1）|
-| stablecoin_marketcap / compliant_total | 每日 |
-| bottom_top_indicator | 每日 |
-| us10y / dxy | 盘中分钟级更新 |
-| m2_supply | 月度 |
-| exchanges / contract | 每日 |
-| bitfinex_long | 每日（h24 参数近实时）|
+| Endpoint type | Update frequency |
+|---------------|-----------------|
+| Newsflash / articles / search | Real-time |
+| top10_netflow | Near real-time |
+| btc_etf / ibit_fbtc / daily_tx | Daily (T+1) |
+| stablecoin_marketcap / compliant_total | Daily |
+| bottom_top_indicator | Daily |
+| us10y / dxy | Intraday minute-level |
+| m2_supply | Monthly |
+| exchanges / contract | Daily |
+| bitfinex_long | Daily (h24 param is near real-time) |
 
 ---
 
-## 错误处理
+## Error Handling
 
-| 错误情况 | 处理方式 |
-|---------|---------|
-| 未设置 `BLOCKBEATS_API_KEY` | 提示：请先设置环境变量 BLOCKBEATS_API_KEY，申请地址：https://www.theblockbeats.info/ |
-| HTTP 401 | 提示：API Key 无效或已过期，请检查密钥是否正确 |
-| HTTP 403 | 提示：当前套餐无权访问该接口，请升级套餐 |
-| status 非 0 | 显示 message 字段内容 |
-| 接口超时 | 提示重试，不影响其他并行接口的结果展示 |
-| data 为空数组 | 说明可能原因（非交易日、数据延迟、该币种暂无数据） |
+| Error condition | Response |
+|----------------|----------|
+| `BLOCKBEATS_API_KEY` not set | Prompt: Please set the BLOCKBEATS_API_KEY environment variable. Apply at: https://www.theblockbeats.info/ |
+| HTTP 401 | Prompt: API Key invalid or expired, please verify your key |
+| HTTP 403 | Prompt: Current plan does not have access to this endpoint, please upgrade |
+| status non-zero | Display the `message` field content |
+| Request timeout | Prompt to retry; do not interrupt other parallel requests |
+| data is empty array | Explain possible reasons (non-trading day, data delay, no data for this token) |
 
-## 注意事项
+## Notes
 
-- `content` 字段为 HTML，展示时剥离标签只显示纯文本
-- `create_time` 字段为字符串格式 `Y-m-d H:i:s`
-- 数值字段（price/vol等）为字符串类型，展示时可格式化为数字
-- 并行请求时任一接口失败不应中断其他接口的展示
+- `content` field is HTML; strip tags and display plain text only
+- `create_time` field format: `Y-m-d H:i:s`
+- Numeric fields (price/vol etc.) are strings; format as numbers when displaying
+- When running parallel requests, a failure on one endpoint must not block display of others
