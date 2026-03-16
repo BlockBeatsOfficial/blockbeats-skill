@@ -1,6 +1,6 @@
 {
   "name": "blockbeats-mcp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "BlockBeats Pro API MCP Server for crypto news, newsflashes, and on-chain market data",
   "main": "dist/index.js",
   "bin": {
