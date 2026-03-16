@@ -1,0 +1,38 @@
+{
+  "name": "blockbeats-mcp",
+  "version": "1.0.0",
+  "description": "BlockBeats Pro API MCP Server for crypto news, newsflashes, and on-chain market data",
+  "main": "dist/index.js",
+  "bin": {
+    "blockbeats-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "blockbeats",
+    "crypto",
+    "news",
+    "bitcoin",
+    "on-chain"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.0.0"
+  }
+}
