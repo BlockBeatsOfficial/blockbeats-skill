@@ -5,7 +5,7 @@ BlockBeats Skill covers over 1,500 information sources, including AI-driven insi
 ## Installation
 
 ```bash
-npx clawhub@latest install blockbeats-news
+npx clawhub@latest install blockbeats-skill
 ```
 
 An [OpenClaw](https://openclaw.dev) skill for querying crypto news, newsflashes, articles, and on-chain market data via the [BlockBeats Pro API](https://www.theblockbeats.info/).
