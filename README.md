@@ -1,4 +1,12 @@
-# blockbeats-openclaw-skill
+# blockbeats-skill
+
+BlockBeats Skill covers over 1,500 information sources, including AI-driven insights, Hyperliquid on-chain data, and Polymarket market analytics. It also features robust keyword-based search functionality.
+
+## Installation
+
+```bash
+npx clawhub@latest install blockbeats-news
+```
 
 An [OpenClaw](https://openclaw.dev) skill for querying crypto news, newsflashes, articles, and on-chain market data via the [BlockBeats Pro API](https://www.theblockbeats.info/).
 
@@ -46,6 +54,7 @@ Ask for any category:
 | Category | Trigger |
 |----------|---------|
 | All newsflashes | latest news, what's new |
+| Last 24h newsflashes | past 24 hours, today's all news |
 | Important | major events, key headlines |
 | Original | exclusive coverage |
 | First-report | scoop, first to report |
@@ -54,6 +63,7 @@ Ask for any category:
 | Prediction market | Polymarket, forecast, betting |
 | AI | AI projects, artificial intelligence news |
 | Articles | in-depth analysis, research |
+| Last 24h articles | today's articles (up to 50) |
 | Important articles | key reports |
 | Original articles | original analysis |
 

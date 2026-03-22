@@ -17,7 +17,7 @@ metadata:
       - market-data
       - on-chain
       - defi
-  version: 2.2.0
+  version: 1.0.0
 ---
 
 # BlockBeats API Skill
@@ -220,7 +220,7 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   -G --data-urlencode "name=[keyword]" --data-urlencode "size=10" --data-urlencode "lang=en"
 ```
 
-Response fields: `title`, `abstract`, `content` (plain text), `type` (0=article, 1=newsflash), `time_cn` (relative time), `url`
+Response fields: `title`, `abstract`, `content` (plain text), `type` (0=article, 1=newsflash), `time_cn` (relative time), `img_url`, `url`; pagination object: `total`, `page`, `size`, `total_pages`; `size` max 100
 
 ---
 
@@ -233,19 +233,21 @@ Select the appropriate newsflash category or article endpoint based on user inte
 | User says | Endpoint path |
 |-----------|--------------|
 | latest news / newsflash list / what's new | `/v1/newsflash` |
+| last 24 hours / past 24h / today's all news | `/v1/newsflash/24h` |
 | important news / major events / key headlines | `/v1/newsflash/important` |
 | original newsflash / original coverage | `/v1/newsflash/original` |
 | first-report / exclusive / scoop | `/v1/newsflash/first` |
 | on-chain news / on-chain data / on-chain updates | `/v1/newsflash/onchain` |
 | financing news / fundraising / VC deals / investment rounds | `/v1/newsflash/financing` |
 | prediction market / Polymarket / forecast / betting | `/v1/newsflash/prediction` |
-| AI news / AI updates / AI projects / artificial intelligence | `/v1/newsflash?type=ai` |
+| AI news / AI updates / AI projects / artificial intelligence | `/v1/newsflash/ai` |
 
 **Article category triggers and endpoints**:
 
 | User says | Endpoint path |
 |-----------|--------------|
 | article list / in-depth articles / latest articles | `/v1/article` |
+| last 24 hours articles / today's articles (up to 50, no pagination) | `/v1/article/24h` |
 | important articles / key reports | `/v1/article/important` |
 | original articles / original analysis | `/v1/article/original` |
 
@@ -253,8 +255,8 @@ Select the appropriate newsflash category or article endpoint based on user inte
 
 ```bash
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/newsflash" \
-  -G --data-urlencode "type=ai" --data-urlencode "page=1" --data-urlencode "size=10" --data-urlencode "lang=en"
+  "http://api-pro.theblockbeats.info/v1/newsflash/ai" \
+  -G --data-urlencode "page=1" --data-urlencode "size=10" --data-urlencode "lang=en"
 ```
 
 **Output format**:
@@ -272,7 +274,7 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
 
 **Notes**:
 - `content` field is HTML; strip tags and display plain text only
-- Article endpoints also return `url`; append original link when displaying
+- Article endpoints do NOT have a `url` field; use `link` for the article page URL
 
 ---
 
@@ -283,13 +285,14 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
 | Endpoint | URL |
 |----------|-----|
 | All newsflashes | `GET /v1/newsflash` |
+| Last 24 hours (no pagination) | `GET /v1/newsflash/24h` |
 | Important | `GET /v1/newsflash/important` |
 | Original | `GET /v1/newsflash/original` |
 | First-report | `GET /v1/newsflash/first` |
 | On-chain | `GET /v1/newsflash/onchain` |
 | Financing | `GET /v1/newsflash/financing` |
 | Prediction market | `GET /v1/newsflash/prediction` |
-| AI | `GET /v1/newsflash?type=ai` |
+| AI | `GET /v1/newsflash/ai` |
 
 ```bash
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
@@ -297,13 +300,23 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
   -G --data-urlencode "page=1" --data-urlencode "size=10" --data-urlencode "lang=en"
 ```
 
-### Article Endpoints (all support page/size/lang)
+### Article Endpoints
 
-| Endpoint | URL |
-|----------|-----|
-| All articles | `GET /v1/article` |
-| Important | `GET /v1/article/important` |
-| Original | `GET /v1/article/original` |
+| Endpoint | URL | Params |
+|----------|-----|--------|
+| All articles | `GET /v1/article` | page/size/lang |
+| Last 24 hours (no pagination, up to 50) | `GET /v1/article/24h` | lang only |
+| Important | `GET /v1/article/important` | page/size/lang |
+| Original | `GET /v1/article/original` | page/size/lang |
+
+### RSS Endpoints
+
+| Endpoint | URL | Key Parameters |
+|----------|-----|----------------|
+| Newsflash RSS | `GET /v1/rss/newsflash` | `page` `size` (1-50) |
+| Article RSS | `GET /v1/rss/article` | `page` `size` (1-50) |
+
+RSS endpoints return XML format. Use when user requests RSS feed or wants to subscribe to updates.
 
 ### Data Endpoints
 
@@ -347,14 +360,16 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
 | Futures / open interest / exchange OI / leverage risk | Scenario 4: Derivatives |
 | search [keyword] | Scenario 5: Search |
 | Latest news / newsflash list | `GET /v1/newsflash` |
+| Last 24 hours / today all newsflashes | `GET /v1/newsflash/24h` |
 | Important newsflashes | `GET /v1/newsflash/important` |
 | Original newsflashes | `GET /v1/newsflash/original` |
 | First-report newsflashes | `GET /v1/newsflash/first` |
 | On-chain newsflashes | `GET /v1/newsflash/onchain` |
 | Financing news | `GET /v1/newsflash/financing` |
 | Prediction market / Polymarket | `GET /v1/newsflash/prediction` |
-| AI newsflashes / AI news | `GET /v1/newsflash?type=ai` |
+| AI newsflashes / AI news | `GET /v1/newsflash/ai` |
 | Article list | `GET /v1/article` |
+| Last 24 hours articles / today's articles | `GET /v1/article/24h` |
 | Important articles | `GET /v1/article/important` |
 | Original articles | `GET /v1/article/original` |
 | BTC ETF inflow | `GET /v1/data/btc_etf` |
@@ -391,9 +406,11 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
 | Error condition | Response |
 |----------------|----------|
 | `BLOCKBEATS_API_KEY` not set | Prompt: Please set the BLOCKBEATS_API_KEY environment variable. Apply at: https://www.theblockbeats.info/ |
-| HTTP 401 | Prompt: API Key invalid or expired, please verify your key |
-| HTTP 403 | Prompt: Current plan does not have access to this endpoint, please upgrade |
-| status non-zero | Display the `message` field content |
+| status 100 | Missing API key — please provide your api-key header |
+| status 101 | Invalid API key — please verify your key |
+| status 102 | API key expired — please renew your subscription |
+| status 103 | Invalid request method — check that you are using GET |
+| status -1 | General failure — display the `message` field content |
 | Request timeout | Prompt to retry; do not interrupt other parallel requests |
 | data is empty array | Explain possible reasons (non-trading day, data delay, no data for this token) |
 
