@@ -1,6 +1,6 @@
 ---
 name: blockbeats-skill
-description: BlockBeats API skill for querying crypto news, newsflashes, articles, search, and on-chain market data (ETF flows, stablecoin supply, derivatives OI, M2, DXY, Bitfinex long positions, and more). Requires BLOCKBEATS_API_KEY.
+description: BlockBeats Skill covers over 1,500 information sources, including AI-driven insights, Hyperliquid on-chain data, and Polymarket market analytics. It also features robust keyword-based search functionality.
 metadata:
   openclaw:
     emoji: "📰"
