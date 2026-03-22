@@ -7,6 +7,8 @@ metadata:
     requires:
       bins:
         - curl
+      env:
+        - BLOCKBEATS_API_KEY
     os:
       - darwin
       - linux
@@ -24,7 +26,7 @@ metadata:
 
 Query crypto newsflashes, articles, search results, and on-chain market data via the BlockBeats Pro API.
 
-**Base URL**: `http://api-pro.theblockbeats.info`
+**Base URL**: `https://api-pro.theblockbeats.info`
 **Auth**: All requests require Header `api-key: $BLOCKBEATS_API_KEY`
 **Response format**: `{"status": 0, "message": "", "data": {...}}` — status 0 = success
 
@@ -39,20 +41,20 @@ Execute the following four requests in parallel:
 ```bash
 # 1. Market sentiment index
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/data/bottom_top_indicator"
+  "https://api-pro.theblockbeats.info/v1/data/bottom_top_indicator"
 
 # 2. Important newsflashes (latest 5)
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/newsflash/important" \
+  "https://api-pro.theblockbeats.info/v1/newsflash/important" \
   -G --data-urlencode "size=5" --data-urlencode "lang=en"
 
 # 3. BTC ETF net inflow
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/data/btc_etf"
+  "https://api-pro.theblockbeats.info/v1/data/btc_etf"
 
 # 4. Daily on-chain transaction volume
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/data/daily_tx"
+  "https://api-pro.theblockbeats.info/v1/data/daily_tx"
 ```
 
 **Output format**:
@@ -86,16 +88,16 @@ Execute in parallel:
 ```bash
 # 1. Top 10 tokens by on-chain net inflow (default solana; replace network param for Base/ETH)
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/data/top10_netflow" \
+  "https://api-pro.theblockbeats.info/v1/data/top10_netflow" \
   -G --data-urlencode "network=solana"
 
 # 2. Stablecoin market cap
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/data/stablecoin_marketcap"
+  "https://api-pro.theblockbeats.info/v1/data/stablecoin_marketcap"
 
 # 3. BTC ETF net inflow
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/data/btc_etf"
+  "https://api-pro.theblockbeats.info/v1/data/btc_etf"
 ```
 
 Select `network` parameter based on user intent: `solana` (default) / `base` / `ethereum`
@@ -127,22 +129,22 @@ Execute in parallel:
 ```bash
 # 1. Global M2 supply
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/data/m2_supply" \
+  "https://api-pro.theblockbeats.info/v1/data/m2_supply" \
   -G --data-urlencode "type=1Y"
 
 # 2. US 10Y Treasury yield
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/data/us10y" \
+  "https://api-pro.theblockbeats.info/v1/data/us10y" \
   -G --data-urlencode "type=1M"
 
 # 3. DXY Dollar Index
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/data/dxy" \
+  "https://api-pro.theblockbeats.info/v1/data/dxy" \
   -G --data-urlencode "type=1M"
 
 # 4. Compliant exchange total assets
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/data/compliant_total"
+  "https://api-pro.theblockbeats.info/v1/data/compliant_total"
 ```
 
 **Output format**:
@@ -176,17 +178,17 @@ Execute in parallel:
 ```bash
 # 1. Major derivatives platform comparison
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/data/contract" \
+  "https://api-pro.theblockbeats.info/v1/data/contract" \
   -G --data-urlencode "dataType=1D"
 
 # 2. Exchange snapshot
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/data/exchanges" \
+  "https://api-pro.theblockbeats.info/v1/data/exchanges" \
   -G --data-urlencode "size=10"
 
 # 3. Bitfinex BTC long positions
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/data/bitfinex_long" \
+  "https://api-pro.theblockbeats.info/v1/data/bitfinex_long" \
   -G --data-urlencode "symbol=btc" --data-urlencode "type=1D"
 ```
 
@@ -216,7 +218,7 @@ Bitfinex BTC Longs: [value] → [increasing/decreasing] (leveraged long sentimen
 
 ```bash
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/search" \
+  "https://api-pro.theblockbeats.info/v1/search" \
   -G --data-urlencode "name=[keyword]" --data-urlencode "size=10" --data-urlencode "lang=en"
 ```
 
@@ -255,7 +257,7 @@ Select the appropriate newsflash category or article endpoint based on user inte
 
 ```bash
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/newsflash/ai" \
+  "https://api-pro.theblockbeats.info/v1/newsflash/ai" \
   -G --data-urlencode "page=1" --data-urlencode "size=10" --data-urlencode "lang=en"
 ```
 
@@ -296,7 +298,7 @@ curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
 
 ```bash
 curl -s -H "api-key: $BLOCKBEATS_API_KEY" \
-  "http://api-pro.theblockbeats.info/v1/newsflash/[type]" \
+  "https://api-pro.theblockbeats.info/v1/newsflash/[type]" \
   -G --data-urlencode "page=1" --data-urlencode "size=10" --data-urlencode "lang=en"
 ```
 
