@@ -25,7 +25,7 @@ metadata:
       - market-data
       - on-chain
       - defi
-  version: 1.0.1
+  version: 1.0.3
 ---
 
 # BlockBeats API Skill
