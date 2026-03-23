@@ -4,6 +4,12 @@ description: BlockBeats Skill covers over 1,500 information sources, including A
 metadata:
   openclaw:
     emoji: "📰"
+    primaryEnv: BLOCKBEATS_API_KEY
+    install:
+      - id: curl
+        kind: brew
+        formula: curl
+        label: curl (HTTP client)
     requires:
       bins:
         - curl
@@ -19,7 +25,7 @@ metadata:
       - market-data
       - on-chain
       - defi
-  version: 1.0.0
+  version: 1.0.1
 ---
 
 # BlockBeats API Skill
